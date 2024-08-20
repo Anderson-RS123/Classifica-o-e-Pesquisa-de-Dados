@@ -1,0 +1,37 @@
+vetor = [5,2,4,6,3,8,10]
+
+def merge(vetor):
+    if len(vetor) <= 1:
+        return vetor
+    meio = len(vetor)//2
+    esq = vetor[:meio]
+    dir = vetor[meio:]
+    esq = merge(esq)
+    dir = merge(dir)
+    return juntar(esq,dir)
+
+def juntar(esq, dir):
+    temp = []
+    a = 0
+    b = 0
+
+    while a < len(esq) and b < len(dir):
+        if esq[a] < dir[b]:  
+            temp.append(esq[a])
+            a = a + 1
+        else:
+            temp.append(dir[b])
+            b = b + 1
+
+    while a < len(esq):
+        temp.append(esq[a])
+        a = a + 1
+
+    while b < len(dir):
+        temp.append(dir[b])
+        b = b + 1
+
+    print(temp)
+    return temp
+
+merge(vetor)
