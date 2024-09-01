@@ -1,0 +1,35 @@
+import random
+listaAle = []
+
+# Lista aleatoria
+for x in range(0,15):
+    numero = random.randint(1,100)
+    listaAle.append(numero)
+
+def quickSort(lista, inicio, fim):
+    if inicio < fim:
+        pivo = particionam(lista, inicio, fim)
+        quickSort(lista, inicio, pivo-1)
+        quickSort(lista, pivo+1, fim)
+
+
+def particionam(lista, inicio, fim):
+    esq, dir = inicio, fim
+    pivo = lista[inicio]
+    
+    while esq < dir:
+        while esq < len(lista) and lista[esq] <= pivo:
+            esq += 1
+
+        while dir >= 0 and lista[dir] > pivo:
+            dir -= 1
+
+        if esq < dir:
+            lista[esq], lista[dir] = lista[dir], lista[esq]
+
+    lista[inicio], lista[dir] = lista[dir], lista[inicio]
+    return dir
+
+quickSort(listaAle, 0, len(listaAle) - 1)
+print("Lista", listaAle)
+
