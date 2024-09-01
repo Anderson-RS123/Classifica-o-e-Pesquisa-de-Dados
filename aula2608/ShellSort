@@ -1,0 +1,33 @@
+# Shell sort
+import random
+
+listaOrd = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]
+listaDes = [15,14,13,12,11,10,9,8,7,6,5,4,3,2,1]
+listaRep = [5,2,7,4,7,5,1,6,12,12,15,3,5,8,3]
+listaAle = []
+
+# Lista aleatoria
+for x in range(0,15):
+    numero = random.randint(1,100)
+    listaAle.append(numero)
+
+def shell(lista):
+    size = len(lista)
+    pular = 4 
+    while pular > 0:
+        for x in range(size):
+            if size > (pular + x):
+                if lista[x] > lista[x + pular]:
+                    lista[x], lista[x + pular] = lista[x + pular], lista[x]
+        pular = pular // 2 
+    
+    passouTodos = False
+    while passouTodos == False:
+        passouTodos = True
+        for x in range(size - 1):
+            if lista[x] > lista[x + 1]:
+                lista[x], lista[x + 1] = lista[x + 1], lista[x]
+                passouTodos = False
+    print("Lista final ordenada:", lista)
+
+shell(listaAle)
