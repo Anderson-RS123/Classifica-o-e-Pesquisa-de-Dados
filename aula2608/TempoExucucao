@@ -1,0 +1,58 @@
+import random
+import time
+import sys
+sys.path.append('C:/Users/Usuario/Desktop/AMF 24.2/classPesqDados2')
+sys.setrecursionlimit(30000)
+
+from aula1908.boubbleSort import bouble
+from aula1908.mergeSort import merge
+from aula1208.insertionSort import insertion
+from aula1208.selectionSort import ordena
+from shellShort import shell
+from quickSort import quickSort
+
+
+
+listaOrd = []
+listaDes = []
+listaRep = []
+listaAle = []
+
+# Lista ordenada
+for x in range(0,1500):
+    listaOrd.append(x)
+
+# Lista ordenada
+for x in range(1500, 0, -1):
+    listaDes.append(x)
+
+# Lista repetida
+for x in range(0,1500):
+    numero = random.randint(1,1000)
+    listaRep.append(numero)
+
+
+# Lista aleatoria
+for x in range(0,1500):
+    numero = random.randint(1,10000)
+    listaAle.append(numero)
+
+listadoNome = ["Lista Ordenada", "Lista Desordenada", "Lista com repetidos", "Lista Aleatoria"]
+listado = [listaOrd, listaDes, listaRep, listaAle]
+tipoOrdenacao = [bouble, merge, insertion, ordena, shell, quickSort]
+
+listas = len(listado) - 1
+while listas >= 0:
+    print(f"\n {listadoNome[listas]}")
+    tipoPos = 0
+    while tipoPos < len(tipoOrdenacao):
+        start_time = time.perf_counter()
+        if tipoOrdenacao[tipoPos] == quickSort:
+            tipoOrdenacao[tipoPos](listado[listas], 0, len(listado[listas]) - 1)
+        else:
+            tipoOrdenacao[tipoPos](listado[listas])
+        end_time = time.perf_counter()
+        total = end_time - start_time
+        print(f"{tipoOrdenacao[tipoPos].__name__}: {total:.6f}")
+        tipoPos = tipoPos + 1
+    listas = listas - 1
