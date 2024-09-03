@@ -10,6 +10,9 @@ from aula1208.insertionSort import insertion
 from aula1208.selectionSort import ordena
 from shellShort import shell
 from quickSort import quickSort
+from aula0209.heapSortMax import heapSort
+from aula0209.heapSortMini import heapSortMini
+from aula0209.countSort import countingSort
 
 
 
@@ -39,7 +42,7 @@ for x in range(0,1500):
 
 listadoNome = ["Lista Ordenada", "Lista Desordenada", "Lista com repetidos", "Lista Aleatoria"]
 listado = [listaOrd, listaDes, listaRep, listaAle]
-tipoOrdenacao = [bouble, merge, insertion, ordena, shell, quickSort]
+tipoOrdenacao = [bouble, merge, insertion, ordena, shell, quickSort, heapSort, heapSortMini, countingSort]
 
 listas = len(listado) - 1
 while listas >= 0:
