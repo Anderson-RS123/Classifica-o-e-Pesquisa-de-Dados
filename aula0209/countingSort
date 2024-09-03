@@ -1,0 +1,54 @@
+import random
+
+listaOrd = []
+listaDes = []
+listaRep = []
+listaAle = []
+
+# Lista ordenada
+for x in range(0,1500):
+    listaOrd.append(x)
+
+# Lista ordenada
+for x in range(1500, 0, -1):
+    listaDes.append(x)
+
+# Lista repetida
+for x in range(0,1500):
+    numero = random.randint(1,1000)
+    listaRep.append(numero)
+
+
+# Lista aleatoria
+for x in range(0,15):
+    numero = random.randint(1,100)
+    listaAle.append(numero)
+
+def countingSort(lista):
+    # Encontra o maior valor na lista
+    max_val = lista[0]
+    for i in range(1, len(lista)):
+        if lista[i] > max_val:
+            max_val = lista[i]
+    
+    novaLista = [0] * (max_val + 1)
+    
+    for i in range(len(lista)):
+        novaLista[lista[i]] += 1
+    
+    for i in range(1, len(novaLista)):
+        novaLista[i] += novaLista[i - 1]
+    
+    output = [0] * len(lista)
+    
+    for i in range(len(lista) - 1, -1, -1):
+        output[novaLista[lista[i]] - 1] = lista[i]
+        novaLista[lista[i]] -= 1
+    
+    for i in range(len(lista)):
+        lista[i] = output[i]
+
+    return lista
+
+li = countingSort(listaAle)
+print(li)
