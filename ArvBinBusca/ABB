@@ -1,0 +1,99 @@
+
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+    def __str__(self):
+        return self.val
+    
+def print_node(node):
+    print(node.val, end=" ")
+
+def simetrica(arv):
+    if arv:
+        simetrica(arv.left)
+        print_node(arv)
+        simetrica(arv.right)
+
+def pre_ordem(arv):
+    if arv:
+        print_node(arv)
+        pre_ordem(arv.left)
+        pre_ordem(arv.right)
+
+
+def pos_ordem(arv):
+    if arv:
+        pos_ordem(arv.left)
+        pos_ordem(arv.right)
+        print_node(arv)
+
+def insere(arv, key):
+    if arv is None:
+        return Node(key)
+    if key < arv.val:
+        arv.left = insere(arv.left, key)
+    else:
+        arv.right = insere(arv.right, key)
+    return arv 
+
+arvore = None
+arvore = insere(arvore, "A")
+arvore = insere(arvore, "C")
+arvore = insere(arvore, "D")
+arvore = insere(arvore, "Z")
+arvore = insere(arvore, "F")
+arvore = insere(arvore, "G")
+arvore = insere(arvore, "B")
+arvore = insere(arvore, "M")
+arvore = insere(arvore, "P")
+arvore = insere(arvore, "A")
+
+def remove(root, key):
+    if root is None:
+        return root
+
+    if key < root.val:
+        root.left = remove(root.left, key)
+    elif key > root.val:
+        root.right = remove(root.right, key)
+    else:
+        if root.left is None and root.right is None: # se o valor for o nó
+            return None
+        
+        if root.left is None:
+            return root.right
+        elif root.right is None:
+            return root.left
+        min_node = root.right
+        while min_node.left is not None:
+            min_node = min_node.left
+        root.val = min_node.val
+        root.right = remove(root.right, min_node.val)
+    return root
+
+
+def busca(arv, key):
+    if arv is None:
+        return print(f" --- O elemento {key} não está na arvore.")
+    if key < arv.val:
+        arv.left = busca(arv.left, key)
+    elif key > arv.val:
+        arv.right = busca(arv.right, key)
+    else:
+        return print(f" --- O elemento {key} está na arvore.")
+
+
+print("Simetrica")
+simetrica(arvore)
+print("\nPre ordem")
+pre_ordem(arvore)
+print("\nPos ordem")
+pos_ordem(arvore)
+remove(arvore, "F")
+print("\nSimetrica após a remocao se tiver o elemento")
+simetrica(arvore)
+print("\nElemanto na lista?")
+busca(arvore,"D")
