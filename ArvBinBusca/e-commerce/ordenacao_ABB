@@ -1,0 +1,98 @@
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+    def __str__(self):
+        return str(self.val)
+    
+def print_node(node):
+    print(node.val, end=" ")
+
+def simetrica(arv):
+    if arv:
+        simetrica(arv.left)
+        print(f"ID: {arv.val[0]} , Nome: {arv.val[1]} , Descrição: {arv.val[2]} , Preço: R${arv.val[3]}")
+        simetrica(arv.right)
+
+def pre_ordem(arv):
+    if arv:
+        print_node(arv)
+        pre_ordem(arv.left)
+        pre_ordem(arv.right)
+
+def pos_ordem(arv):
+    if arv:
+        pos_ordem(arv.left)
+        pos_ordem(arv.right)
+        print_node(arv)
+
+def insere(arv, key):
+    if arv is None:
+        return Node(key)
+    if key[0] < arv.val[0]:
+        arv.left = insere(arv.left, key)
+    else:
+        arv.right = insere(arv.right, key)
+    return arv 
+
+def remove(root, key):
+    if root is None:
+        return root
+
+    if key < root.val[0]:
+        root.left = remove(root.left, key)
+    elif key > root.val[0]:
+        root.right = remove(root.right, key)
+    else:
+        if root.left is None and root.right is None:
+            return None
+        if root.left is None:
+            return root.right
+        elif root.right is None:
+            return root.left
+        min_node = root.right
+        while min_node.left is not None:
+            min_node = min_node.left
+        root.val = min_node.val
+        root.right = remove(root.right, min_node.val[0])
+    return root
+
+def busca(arv, key):
+    if arv is None:
+        print(f"--- O produto de id {key[0]} não está no estoque.")
+        return None
+    if key < arv.val[0]:
+        return busca(arv.left, key)
+    elif key > arv.val[0]:
+        return busca(arv.right, key)
+    else:
+        print(f"--- O produto de id {arv.val[0]} está na árvore.")
+        print(f"ID: {arv.val[0]} , Nome: {arv.val[1]} , Descrição: {arv.val[2]} , Preço: R${arv.val[3]}")
+        return arv
+
+arvore = None
+while True:
+    try: 
+        opcao = int(input("Escolha uma opcao:\n1 - Inserir produto\n2 - Remover produto\n3 - Buscar produto\n4 - Listar produtos\n0 - Sair\n"))
+        if opcao == 1:
+            id = int(input("Qual o id do produto que você quer inserir?\n"))
+            nome = str(input("Qual o nome do produto?\n"))
+            descricao = str(input("Descrição do produto:\n"))
+            preco = float(input("Qual o preço do produto?\n"))
+            produto = [id, nome, descricao, preco]
+            arvore = insere(arvore, produto)
+        elif opcao == 2:
+            id = int(input("Qual o id do produto que você quer remover?\n"))
+            arvore = remove(arvore, id)
+        elif opcao == 3:
+            id = int(input("Qual o id do produto que você quer procurar?\n"))
+            busca(arvore, id)
+        elif opcao == 4:
+            print("Produtos Listados:\n")
+            simetrica(arvore)
+        elif opcao == 0:
+            break
+    except:
+        print("Ocorreu algum erro!!!")
