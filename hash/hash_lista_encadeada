@@ -1,0 +1,53 @@
+dic_hash = {}
+
+class Lista:
+    def __init__(self, valor=None):
+        self.info = valor
+        self.prox = None
+
+# criar lista
+def cria_lista():
+    return None
+
+# inserir dados
+def insere_lista(lst, valor):
+    novo = Lista(valor)
+    novo.prox = lst
+    return novo
+
+def menu():
+    while True:
+        opcao = int(input("Qual a opcao:\n1:Inserir\n2:Sair\n"))
+        if opcao == 1:
+            inserir()
+        else:
+            break
+
+def inserir():
+    # cpf de 5 digitos
+    cpf = int(input("Digite o CPF: "))
+    nome = str(input("Digite o nome: "))
+    indice = calcula_indice(cpf)
+
+    if indice not in dic_hash:
+        dic_hash[indice] =  cria_lista()
+    
+    dic_hash[indice] = insere_lista(dic_hash[indice], nome) 
+
+def calcula_indice(cpf):
+    return cpf % 9991
+
+# Exibir os valores da lista encadeada
+def exibe_lista(lst):
+    elementos = []
+    atual = lst
+    while atual is not None:
+        elementos.append(atual.info)
+        atual = atual.prox
+    return elementos
+
+def exibe_dicionario():
+    for indice, lst in dic_hash.items():
+        print(f"{indice}: {exibe_lista(lst)}")
+menu()
+exibe_dicionario()
