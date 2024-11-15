@@ -1,0 +1,26 @@
+dic_hash = {}
+
+def menu():
+    while True:
+        opcao = int(input("Qual a opcao:\n1:Inserir\n2:Sair\n"))
+        if opcao == 1:
+            inserir()
+        else:
+            break
+
+def inserir():
+    # cpf de 5 digitos
+    cpf = int(input("Digite o CPF: "))
+    nome = str(input("Digite o nome: "))
+    indice = calcula_indice(cpf)
+
+    if indice not in dic_hash:
+        dic_hash[indice] = [] 
+    
+    dic_hash[indice].append(nome)
+
+def calcula_indice(cpf):
+    return cpf % 9991
+
+menu()
+print(dic_hash)
