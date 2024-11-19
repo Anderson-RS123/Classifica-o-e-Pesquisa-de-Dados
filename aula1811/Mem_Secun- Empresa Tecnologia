@@ -1,0 +1,75 @@
+hash = {}      # dicionario 
+cont_hash = 0   #  contador para verificar a quantidade de elementos no dicionario
+
+def menu():
+    while True:
+        opcao = int(input("Qual opcao voce escolhe?\n1 - Adicionar\n2 - Buscar\n3 - Remover arquivos\n4 - Listar arquivos\n5 - Sair\n"))
+        if opcao == 1 and cont_hash < 11:
+            adicionar()
+        elif opcao == 2:
+            buscar()
+        elif opcao == 3:
+            remover()
+        elif opcao == 4:
+            listar()
+        elif opcao == 5:
+            break
+
+def adicionar():
+    nome = str(input("Qual o nome do arquivo? "))
+    caminho = str(input("Qual ocaminho do arquivo? "))
+    tamanho = int(input("Qual o tamanho do arquivo? "))
+    indice = hash_indice(nome)
+    if indice not in hash:
+        hash[indice] = [] 
+
+    hash[indice].append({
+        "nome": nome,
+        "caminho": caminho,
+        "tamanho": tamanho
+    })
+    cont_hash =+ 1
+
+def buscar():
+    nomeArquivo = str(input("Qual o nome do arquivo que você procura? "))
+    encontrado = False
+    for chave in hash:
+        lista = hash[chave]
+        for item in lista:
+            if item["nome"] == nomeArquivo:  # Verifica o nome (índice 0 da tupla)
+                print(f"Arquivo encontrado!")
+                print(f"Nome: {item["nome"]}")
+                print(f"Endereço: {item["caminho"]}")
+                print(f"Tamanho: {item["tamanho"]} bytes")
+                encontrado = True
+                break
+    
+    if not encontrado:
+        print("Arquivo não encontrado.")
+
+def remover():
+    nomeArquivo = str(input("Qual o nome do arquivo que você procura para remover? "))
+    encontrado = False
+    for chave in hash:
+        lista = hash[chave]
+        for item in lista:
+            if item["nome"] == nomeArquivo:
+                lista.remove(item)           
+                print(f"Arquivo '{nomeArquivo}' removido!")
+                encontrado = True
+                break
+    if not encontrado:
+        print("Arquivo não encontrado.")
+
+def hash_indice(nome):
+    return len(nome)/10
+
+def listar():
+    for chave in hash:
+        lista = hash[chave]
+        for item in lista:
+            print(f"Nome: {item["nome"]}")
+            print(f"Endereço: {item["caminho"]}")
+            print(f"Tamanho: {item["tamanho"]} bytes")
+
+menu()
