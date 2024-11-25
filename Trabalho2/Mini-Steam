@@ -1,0 +1,158 @@
+# dicionario da tabela hash
+jogos_hash = {}
+
+# classe para criação da ABB
+class Node:
+    def __init__(self, val, left=None, right=None):
+        self.val = val
+        self.left = left
+        self.right = right
+
+    def __str__(self):
+        return str(self.val)
+
+# classe para criacao da lista encadeada para a hash table
+class Lista:
+    def __init__(self, valor=None):
+        self.info = valor
+        self.prox = None
+
+# criar lista
+def cria_lista():
+    return None
+
+# inserir dados na lista encadeada da hash table
+def insere_lista(lst, valor):
+    novo = Lista(valor)
+    novo.prox = lst
+    return novo
+
+# Menu
+def menu(arv):
+    opcao = 0
+    while opcao != 5:
+        opcao = int(input("Escolha uma opção:\n1 - Inserir\n2 - Preco Fixo\n3 - Faixa de Preco\n4 - Genero\n5 - Sair\n"))
+        if opcao == 1:
+            titulo_jogo = str(input("Qual o titulo do jogo?\n"))
+            dev = str(input("Quem é o desenvolvedor do jogo?\n"))
+            preco_jogo = float(input("Qual o preço do jogo?\n"))
+            genero = str(input("Qual é o genero do jogo?\n"))
+
+            jogos = {
+                "id": None,
+                "titulo": titulo_jogo,
+                "desenvolvedor": dev,
+                "preco": preco_jogo,
+                "genero": genero
+            }
+
+            arv = inserir_arvore(arv, jogos, 1)  # Passar o ID inicial 1
+
+        elif opcao == 2:
+            preco = int(input("Qual o preco do jogo que voce procura?\n"))
+            procura_jogo_preco(arv, preco)
+
+        elif opcao == 3:
+            preco_minimo_1 = input("Qual o preco minimo?\n")
+            if preco_minimo_1 == "":
+                preco_minimo = 0
+            else:
+                preco_minimo = int(preco_minimo_1)
+            preco_maximo_1 = input("Qual o preco maximo?\n")
+            if preco_maximo_1 == "":
+                preco_maximo = 1000000
+            else:
+                preco_maximo = int(preco_maximo_1)
+            procura_jogo_faixa_preco(arv, preco_minimo, preco_maximo)
+
+        elif opcao == 4:
+            qual_genero = str(input("Jogos de qual genero voce quer procurar\n"))
+            hash_genero(jogos_hash, qual_genero, arv)
+    return arv
+
+# inserir valores na ABB
+def inserir_arvore(arv, jogos, id):
+    if arv is None:
+        jogos["id"] = id
+        genero = jogos["genero"]
+        if genero not in jogos_hash:
+            jogos_hash[genero] = cria_lista()
+        jogos_hash[genero] = insere_lista(jogos_hash[genero], jogos["id"])
+        return Node(jogos)
+    
+    if jogos["preco"] < arv.val["preco"]:
+        arv.left = inserir_arvore(arv.left, jogos, id * 2)
+    else:
+        arv.right = inserir_arvore(arv.right, jogos, id * 2 + 1)
+    return arv
+
+# Procura jogos pelo preco
+def procura_jogo_preco(arv, preco):
+    if arv is None:
+        return print("Nenhum jogo com esse preco.")
+    if preco == arv.val["preco"]:
+        print(f"********************************************")
+        print(f"Nome do jogo: {arv.val['titulo']}")
+        print(f"Desenvolvedor: {arv.val['desenvolvedor']}")
+        print(f"Preco do jogo: {arv.val['preco']}")
+        print(f"Genero: {arv.val['genero']}")
+        print(f"********************************************")
+        procura_jogo_preco(arv.right, preco)
+    elif preco < arv.val["preco"]:
+        procura_jogo_preco(arv.left, preco)
+    else:
+        procura_jogo_preco(arv.right, preco)
+
+# Procura jogos pela faixa de precos
+def procura_jogo_faixa_preco(arv, preco_minimo, preco_maximo):
+    if arv is None:
+        return
+    if arv.val["preco"] > preco_minimo:
+        procura_jogo_faixa_preco(arv.left, preco_minimo, preco_maximo)
+    if preco_minimo <= arv.val["preco"] <= preco_maximo:
+        print(f"********************************************")
+        print(f"Nome do jogo: {arv.val['titulo']}")
+        print(f"Desenvolvedor: {arv.val['desenvolvedor']}")
+        print(f"Preco do jogo: {arv.val['preco']}")
+        print(f"Genero: {arv.val['genero']}")
+        print(f"********************************************")
+    if arv.val["preco"] < preco_maximo:
+        procura_jogo_faixa_preco(arv.right, preco_minimo, preco_maximo)
+
+# Procurar os id dos jogos do genero escolhido
+def hash_genero(jogos_hash, qual_genero, arv):
+    if qual_genero not in jogos_hash:
+        print("Nenhum jogo encontrado para esse gênero.")
+        return
+    print(f"Jogos do gênero {qual_genero}:")
+    lista = jogos_hash[qual_genero]
+    lista_ids = []
+    while lista:
+        lista_ids.append(lista.info)
+        lista = lista.prox
+
+    for x in lista_ids:
+        jogo = buscar_jogo_por_id(arv, x)
+        if jogo:
+            print(f"********************************************")
+            print(f"Nome do jogo: {jogo['titulo']}")
+            print(f"Desenvolvedor: {jogo['desenvolvedor']}")
+            print(f"Preco do jogo: {jogo['preco']}")
+            print(f"Genero: {jogo['genero']}")
+            print(f"********************************************")
+
+def buscar_jogo_por_id(arv, id):
+    if arv is None:
+        return None
+    if arv.val["id"] == id:
+        return arv.val
+    left_result = buscar_jogo_por_id(arv.left, id)
+    if left_result:
+        return left_result
+    right_result = buscar_jogo_por_id(arv.right, id)
+    if right_result:
+        return right_result
+    return None
+
+arv = None
+arv = menu(arv)
